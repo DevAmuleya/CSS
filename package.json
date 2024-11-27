@@ -7,10 +7,22 @@
     "minipass": "^3.3.6"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "concat": "^1.0.3",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^11.0.0",
     "sass": "^1.80.6"
   },
   "scripts": {
-    "compile:sass": "sass sass/main.scss style.css -w"
+  "watch:sass": "sass sass/main.scss style.css -w",
+  "devserver": "live-server",
+  "start": "npm-run-all --parallel devserver watch:sass",
+  "compile:sass": "sass sass/main.scss style.comp.css",
+  "concat:css": "concat -o style.concat.css _ICONFONT/icon-font.css style.comp.css",
+  "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' style.concat.css -o style.prefix.css",
+  "compress:css": "sass style.prefix.css style.css --style=compressed",
+  "copy:fonts": "ncp _ICONFONT/fonts build/fonts",
+  "build:css": "npm-run-all compile:sass concat:css prefix:css compress:css copy:fonts"
   },
   "author": "Amuleya",
   "license": "ISC",
